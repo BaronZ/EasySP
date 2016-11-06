@@ -11,7 +11,10 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
+ext {
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
+    targetCompatibilityVersion = JavaVersion.VERSION_1_7
+}
 allprojects {
     repositories {
         jcenter()
