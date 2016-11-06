@@ -33,5 +33,5 @@ task processorTask(type: Copy) {
     from '../easysp-processor/build/libs/easysp-processor.jar'
     into 'libs/'
 }
-processorTask.dependsOn(':processor:build')
+processorTask.dependsOn(':easysp-processor:build')
 preBuild.dependsOn(processorTask)
