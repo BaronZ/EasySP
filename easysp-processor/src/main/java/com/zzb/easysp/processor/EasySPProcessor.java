@@ -20,7 +20,7 @@ public class EasySPProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        createJavaFile(annotations, roundEnv);
+        generateJavaFile(annotations, roundEnv);
         return true;
     }
 
@@ -31,7 +31,7 @@ public class EasySPProcessor extends AbstractProcessor {
         mFiler = processingEnv.getFiler();
     }
 
-    private void createJavaFile(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    private void generateJavaFile(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
     }
 

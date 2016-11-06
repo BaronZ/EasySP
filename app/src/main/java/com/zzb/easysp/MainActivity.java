@@ -3,6 +3,9 @@ package com.zzb.easysp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.zzb.easysp.processor.annotations.CustomKey;
+
+@CustomKey
 public class MainActivity extends AppCompatActivity {
 
     @Override

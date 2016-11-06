@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Created by ZZB on 2016/11/6.
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
 public @interface DefaultValue {
 }
