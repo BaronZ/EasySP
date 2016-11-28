@@ -1,5 +1,6 @@
 package com.zzb.easysp.compiler;
 
+import com.google.auto.service.AutoService;
 import com.zzb.easysp.EasySP;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,6 +8,7 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
@@ -14,7 +16,7 @@ import javax.lang.model.element.TypeElement;
 /**
  * Created by ZZB on 2016/11/28.
  */
-
+@AutoService(Processor.class)
 public class EasySpProcessor extends AbstractProcessor {
 
     private Messager mMessager;//The messager is how we send messages back to the user. We can't use System.out
