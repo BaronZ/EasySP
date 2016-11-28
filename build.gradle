@@ -11,10 +11,16 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+
 ext {
+    minSdkVersion = 9
+    targetSdkVersion = 24
+    compileSdkVersion = 24
+    buildToolsVersion = '24.0.2'
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
 }
+
 
 allprojects {
     repositories {
