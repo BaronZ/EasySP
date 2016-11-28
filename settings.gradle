@@ -1,1 +1,1 @@
-include ':app', ':easysp-processor', ':easysp-annotations'
+include ':app', ':easysp-processor', ':easysp-annotations', ':easysp-compiler'
