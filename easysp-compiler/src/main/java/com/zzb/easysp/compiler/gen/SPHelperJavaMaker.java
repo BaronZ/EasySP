@@ -1,13 +1,8 @@
 package com.zzb.easysp.compiler.gen;
 
-import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-import com.zzb.easysp.compiler.common.Const;
 import com.zzb.easysp.compiler.common.TypeNameEx;
-import java.io.IOException;
-import java.lang.annotation.ElementType;
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -37,9 +32,8 @@ public class SPHelperJavaMaker implements IJavaMaker {
                 .addMethod(methodNewInstance)
                 .build();
 
-        JavaFile javaFile = JavaFile.builder(Const.PACKAGE_NAME, clazz)
-                .build();
-        JavaMakerHelper.brewJava(javaFile, processingEnv, elementType);
+
+        JavaMaker.brewJava(clazz, processingEnv, elementType);
 
     }
 }

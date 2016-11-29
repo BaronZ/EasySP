@@ -2,6 +2,7 @@ package com.zzb.easysp.compiler.gen;
 
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
+import com.zzb.easysp.compiler.common.Const;
 import java.io.IOException;
 import java.io.Writer;
 import javax.annotation.processing.Filer;
@@ -14,11 +15,14 @@ import javax.tools.JavaFileObject;
  * Created by ZZB on 2016/11/29.
  */
 
-public class JavaMakerHelper {
+public class JavaMaker {
 
-    public static void brewJava(JavaFile javaFile, ProcessingEnvironment processingEnv, Element typeElement){
+    public static void brewJava(TypeSpec clazz, ProcessingEnvironment processingEnv, Element typeElement){
         Filer filer = processingEnv.getFiler();
         try {
+            JavaFile javaFile = JavaFile.builder(Const.PACKAGE_NAME, clazz)
+                    .addFileComment("Generated code from Easy SP. Do not modify!")
+                    .build();
             javaFile.writeTo(filer);
         } catch (IOException e) {
             e.printStackTrace();
