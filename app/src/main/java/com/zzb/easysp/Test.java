@@ -7,9 +7,13 @@ package com.zzb.easysp;
 public class Test {
     String imString2;
     String imString;
-    //Object thisIsObject;
-    //int thisIsInt;
-    //MainActivity thisIsActivity;
+    Object thisIsObject;
+    int thisIsInt;
+    MainActivity thisIsActivity;
+    Long thisIsBoxedLong;
+    long thisIsPrimitiveLong;
+    float thisIsPrimitiveFloat;
+    Float thisIsBoxedFloat;
 
     private void test(){}
 }

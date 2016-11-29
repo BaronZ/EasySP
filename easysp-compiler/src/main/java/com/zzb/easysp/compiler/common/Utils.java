@@ -27,66 +27,56 @@ public class Utils {
     }
 
     public static boolean isSupportedFieldType(TypeMirror fieldType) {
-        TypeKind kind = fieldType.getKind();
-        boolean isPrimitive = kind.isPrimitive();
-        if (isPrimitive) {
-            switch (kind) {
-                case BOOLEAN:
-                case INT:
-                case LONG:
-                case FLOAT:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-        String fullTypeClassName = fieldType.toString();
-        boolean isString = String.class.getName().equals(fullTypeClassName);
-        if (isString) {
+        TypeKind typeKind = fieldType.getKind();
+        String typeClassName = fieldType.toString();
+        if(typeKind == TypeKind.BOOLEAN || Boolean.class.getName().equals(typeClassName)){
             return true;
+        }else if(typeKind == TypeKind.INT || Integer.class.getName().equals(typeClassName)){
+            return true;
+        }else if(typeKind == TypeKind.LONG || Long.class.getName().equals(typeClassName)){
+            return true;
+        }else if(typeKind == TypeKind.FLOAT || Float.class.getName().equals(typeClassName)){
+            return true;
+        }else if(String.class.getName().equals(typeClassName)){
+            return true;
+        }else {
+            return false;
         }
-        return false;
     }
 
     public static Type getType(TypeMirror fieldType) {
-        switch (fieldType.getKind()) {
-            case BOOLEAN:
-                return boolean.class;
-            case INT:
-                return int.class;
-            case LONG:
-                return long.class;
-            case FLOAT:
-                return float.class;
-            default:
-                String fullTypeClassName = fieldType.toString();
-                boolean isString = String.class.getName().equals(fullTypeClassName);
-                if (isString) {
-                    return String.class;
-                } else {
-                    return Object.class;
-                }
+        TypeKind typeKind = fieldType.getKind();
+        String typeClassName = fieldType.toString();
+        if(typeKind == TypeKind.BOOLEAN || Boolean.class.getName().equals(typeClassName)){
+            return boolean.class;
+        }else if(typeKind == TypeKind.INT || Integer.class.getName().equals(typeClassName)){
+            return int.class;
+        }else if(typeKind == TypeKind.LONG || Long.class.getName().equals(typeClassName)){
+            return long.class;
+        }else if(typeKind == TypeKind.FLOAT || Float.class.getName().equals(typeClassName)){
+            return float.class;
+        }else if(String.class.getName().equals(typeClassName)){
+            return String.class;
+        }else {
+            return Object.class;
         }
     }
 
     public static String getTypeName(TypeMirror fieldType) {
-        switch (fieldType.getKind()) {
-            case BOOLEAN:
-                return "Boolean";
-            case INT:
-                return "Int";
-            case LONG:
-                return "Long";
-            case FLOAT:
-                return "Float";
-            default:
-                String fullTypeClassName = fieldType.toString();
-                boolean isString = String.class.getName().equals(fullTypeClassName);
-                if (isString) {
-                    return "String";
-                } else {
-                    return "";
-                }
+        TypeKind typeKind = fieldType.getKind();
+        String typeClassName = fieldType.toString();
+        if(typeKind == TypeKind.BOOLEAN || Boolean.class.getName().equals(typeClassName)){
+            return "Boolean";
+        }else if(typeKind == TypeKind.INT || Integer.class.getName().equals(typeClassName)){
+            return "Int";
+        }else if(typeKind == TypeKind.LONG || Long.class.getName().equals(typeClassName)){
+            return "Long";
+        }else if(typeKind == TypeKind.FLOAT || Float.class.getName().equals(typeClassName)){
+            return "Float";
+        }else if(String.class.getName().equals(typeClassName)){
+            return "String";
+        }else {
+            return "";
         }
     }
 

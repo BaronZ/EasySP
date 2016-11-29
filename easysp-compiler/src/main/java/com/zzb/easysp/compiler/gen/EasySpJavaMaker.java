@@ -55,11 +55,26 @@ public class EasySpJavaMaker {
                 clazzBuilder.addMethod(getter(field));
                 clazzBuilder.addMethod(setter(field));
             }else{
+                //clazzBuilder.addMethod(notSupport(field));
                 //// TODO: 2016/11/29 有不支持的类型给提示 warning
             }
         }
         TypeSpec clazz = clazzBuilder.build();
         JavaMaker.brewJava(clazz, processingEnv);
+    }
+
+    private MethodSpec notSupport(VariableElement field) {
+        String fieldName = field.getSimpleName().toString();
+        TypeMirror typeMirror = field.asType();
+        Type type = Utils.getType(typeMirror);
+        String parameter = "value";
+        MethodSpec method = MethodSpec.methodBuilder("notSupport" + fieldName)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(type, parameter)
+                .addStatement(Utils.getSpSetterStatement(typeMirror, fieldName, parameter))
+                .returns(void.class)
+                .build();
+        return method;
     }
 
     private MethodSpec getter(VariableElement field) {
