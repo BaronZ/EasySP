@@ -84,6 +84,10 @@ public class Utils {
         String format = "spHelper.set%s(\"%s\", %s)";
         return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, parameter);
     }
+    public static String getSpGetterStatement(TypeMirror typeMirror, String fieldName, String parameter) {
+        String format = "return spHelper.get%s(\"%s\", %s)";
+        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, parameter);
+    }
 
     public static String upperCaseFirst(String value) {
 

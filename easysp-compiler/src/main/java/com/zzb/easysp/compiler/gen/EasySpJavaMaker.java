@@ -85,8 +85,8 @@ public class EasySpJavaMaker {
         MethodSpec method = MethodSpec.methodBuilder(Utils.getGetterMethodName(fieldName))
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(type, parameter)
-                .addStatement(Utils.getSpSetterStatement(typeMirror, fieldName, parameter))
-                .returns(void.class)
+                .addStatement(Utils.getSpGetterStatement(typeMirror, fieldName, parameter))
+                .returns(type)
                 .build();
         return method;
     }
