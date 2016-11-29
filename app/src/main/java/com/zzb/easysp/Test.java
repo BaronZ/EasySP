@@ -5,11 +5,11 @@ package com.zzb.easysp;
  */
 @EasySp
 public class Test {
-
-    String mString;
-    Object mObject;
-    int mInt;
-    MainActivity mActivity;
+    String imString2;
+    String imString;
+    Object thisIsObject;
+    int thisIsInt;
+    MainActivity thisIsActivity;
 
     private void test(){}
 }

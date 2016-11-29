@@ -7,7 +7,12 @@ import javax.lang.model.type.TypeMirror;
  */
 
 public class Utils {
-
+    public static String getSetterMethodName(String fieldName){
+        return "set" + upperCaseFirst(fieldName);
+    }
+    public static String getGetterMethodName(String fieldName){
+        return "get" + upperCaseFirst(fieldName);
+    }
     public static boolean isSupportedFieldType(TypeMirror fieldType) {
         boolean isPrimitive = fieldType.getKind().isPrimitive();
         if (isPrimitive) {
@@ -19,5 +24,14 @@ public class Utils {
             return true;
         }
         return false;
+    }
+    public static String upperCaseFirst(String value) {
+
+        // Convert String to char array.
+        char[] array = value.toCharArray();
+        // Modify first element in array.
+        array[0] = Character.toUpperCase(array[0]);
+        // Return string.
+        return new String(array);
     }
 }
