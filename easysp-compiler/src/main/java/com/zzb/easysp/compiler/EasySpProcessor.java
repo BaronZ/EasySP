@@ -34,7 +34,7 @@ public class EasySpProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         //genEasySP(null);
-        genSPHelper(null);
+        genSPHelper();
         parseEasySpAndGen(null);
         return true;
     }
@@ -43,8 +43,8 @@ public class EasySpProcessor extends AbstractProcessor {
 
     }
 
-    private void genSPHelper(TypeElement element) {
-        new SPHelperJavaMaker().brewJava(processingEnv, element);
+    private void genSPHelper() {
+        new SPHelperJavaMaker().brewJava(processingEnv);
     }
 
     //private void genEasySP(TypeElement element) {

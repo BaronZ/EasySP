@@ -17,7 +17,7 @@ import javax.tools.JavaFileObject;
 
 public class JavaMaker {
 
-    public static void brewJava(TypeSpec clazz, ProcessingEnvironment processingEnv, Element typeElement){
+    public static void brewJava(TypeSpec clazz, ProcessingEnvironment processingEnv){
         Filer filer = processingEnv.getFiler();
         try {
             JavaFile javaFile = JavaFile.builder(Const.PACKAGE_NAME, clazz)

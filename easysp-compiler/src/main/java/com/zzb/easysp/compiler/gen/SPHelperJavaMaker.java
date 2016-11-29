@@ -11,10 +11,9 @@ import javax.lang.model.element.TypeElement;
  * Created by ZZB on 2016/11/28.
  */
 
-public class SPHelperJavaMaker implements IJavaMaker {
+public class SPHelperJavaMaker {
 
-    @Override
-    public void brewJava(ProcessingEnvironment processingEnv, TypeElement elementType) {
+    public void brewJava(ProcessingEnvironment processingEnv) {
 
 
         TypeSpec clazz = TypeSpec.classBuilder("SPHelper")
@@ -29,7 +28,7 @@ public class SPHelperJavaMaker implements IJavaMaker {
                 .build();
 
 
-        JavaMaker.brewJava(clazz, processingEnv, elementType);
+        JavaMaker.brewJava(clazz, processingEnv);
 
     }
     private MethodSpec setString(){
