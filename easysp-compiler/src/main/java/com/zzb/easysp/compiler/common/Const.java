@@ -7,7 +7,7 @@ package com.zzb.easysp.compiler.common;
 public class Const {
 
     public static final String PACKAGE_NAME = "com.zzb.easysp.generated";
-
+    public static final String LIBRARY_PREFIX = "EasySp";
     public interface ClassName{
         String SPHelper = "SPHelper";
     }

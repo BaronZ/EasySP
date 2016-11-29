@@ -2,8 +2,11 @@ package com.zzb.easysp.compiler;
 
 import com.google.auto.service.AutoService;
 import com.zzb.easysp.EasySp;
+import com.zzb.easysp.compiler.gen.EasySpJavaMaker;
 import com.zzb.easysp.compiler.gen.SPHelperJavaMaker;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
@@ -13,7 +16,11 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 
 /**
  * Created by ZZB on 2016/11/28.
@@ -21,35 +28,23 @@ import javax.lang.model.element.TypeElement;
 @AutoService(Processor.class)
 public class EasySpProcessor extends AbstractProcessor {
 
-    private Messager mMessager;//The messager is how we send messages back to the user. We can't use System.out
-    private Filer mFiler;// You use the filer to write your new files.
-
-    @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
-        super.init(processingEnv);
-        mMessager = processingEnv.getMessager();
-        mFiler = processingEnv.getFiler();
-    }
-
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        //genEasySP(null);
         genSPHelper();
-        parseEasySpAndGen(null);
+        genEasySp(roundEnv);
+
         return true;
     }
 
-    private void parseEasySpAndGen(TypeElement element) {
 
-    }
 
     private void genSPHelper() {
         new SPHelperJavaMaker().brewJava(processingEnv);
     }
 
-    //private void genEasySP(TypeElement element) {
-    //
-    //}
+    private void genEasySp(RoundEnvironment roundEnv) {
+        new EasySpJavaMaker(processingEnv, roundEnv).brewJava();
+    }
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
