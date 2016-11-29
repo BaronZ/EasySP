@@ -2,7 +2,10 @@ package com.zzb.easysp.compiler;
 
 import com.google.auto.service.AutoService;
 import com.zzb.easysp.EasySP;
+import com.zzb.easysp.compiler.gen.SPHelperJavaMaker;
+import java.lang.annotation.Annotation;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -31,16 +34,38 @@ public class EasySpProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        return false;
+        genEasySP(null);
+        genSPHelper(null);
+        parseEasySPAndGen(null);
+        return true;
+    }
+
+    private void parseEasySPAndGen(TypeElement element) {
+
+    }
+
+    private void genSPHelper(TypeElement element) {
+        new SPHelperJavaMaker().brewJava(processingEnv, element);
+    }
+
+    private void genEasySP(TypeElement element) {
+
     }
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        Set<String> set = new HashSet<>();
-        set.add(EasySP.class.getCanonicalName());
-        return set;
+        Set<String> types = new LinkedHashSet<>();
+        for (Class<? extends Annotation> annotation : getSupportedAnnotations()) {
+            types.add(annotation.getCanonicalName());
+        }
+        return types;
     }
 
+    private Set<Class<? extends Annotation>> getSupportedAnnotations() {
+        Set<Class<? extends Annotation>> annotations = new LinkedHashSet<>();
+        annotations.add(EasySP.class);
+        return annotations;
+    }
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
