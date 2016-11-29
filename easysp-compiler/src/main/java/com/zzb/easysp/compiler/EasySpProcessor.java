@@ -1,10 +1,9 @@
 package com.zzb.easysp.compiler;
 
 import com.google.auto.service.AutoService;
-import com.zzb.easysp.EasySP;
+import com.zzb.easysp.EasySp;
 import com.zzb.easysp.compiler.gen.SPHelperJavaMaker;
 import java.lang.annotation.Annotation;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
@@ -34,13 +33,13 @@ public class EasySpProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        genEasySP(null);
+        //genEasySP(null);
         genSPHelper(null);
-        parseEasySPAndGen(null);
+        parseEasySpAndGen(null);
         return true;
     }
 
-    private void parseEasySPAndGen(TypeElement element) {
+    private void parseEasySpAndGen(TypeElement element) {
 
     }
 
@@ -48,9 +47,9 @@ public class EasySpProcessor extends AbstractProcessor {
         new SPHelperJavaMaker().brewJava(processingEnv, element);
     }
 
-    private void genEasySP(TypeElement element) {
-
-    }
+    //private void genEasySP(TypeElement element) {
+    //
+    //}
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
@@ -63,7 +62,7 @@ public class EasySpProcessor extends AbstractProcessor {
 
     private Set<Class<? extends Annotation>> getSupportedAnnotations() {
         Set<Class<? extends Annotation>> annotations = new LinkedHashSet<>();
-        annotations.add(EasySP.class);
+        annotations.add(EasySp.class);
         return annotations;
     }
     @Override
