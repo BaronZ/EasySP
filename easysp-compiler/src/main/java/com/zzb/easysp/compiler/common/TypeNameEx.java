@@ -12,4 +12,5 @@ public class TypeNameEx {
     public static final ClassName SP_HELPER = ClassName.get(Const.PACKAGE_NAME, Const.ClassName.SPHelper);
     public static final ClassName SP_EDITOR = ClassName.get("android.content.SharedPreferences", "Editor");
     public static final ClassName ACTIVITY = ClassName.get("android.app", "Activity");
+    public static final ClassName STRING = ClassName.get("java.lang", "String");
 }

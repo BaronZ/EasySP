@@ -4,23 +4,18 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 import com.zzb.easysp.EasySp;
 import com.zzb.easysp.compiler.common.Const;
+import com.zzb.easysp.compiler.common.TypeNameEx;
 import com.zzb.easysp.compiler.common.Utils;
+import java.lang.reflect.Type;
 import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementVisitor;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleElementVisitor6;
-import javax.lang.model.util.SimpleElementVisitor7;
 
 /**
  * Created by ZZB on 2016/11/29.
@@ -48,14 +43,20 @@ public class EasySpJavaMaker {
     }
 
     private void parseEasySpAndGen(Element element) {
-        TypeElement classElement = (TypeElement) element;
         List<VariableElement> fields = ElementFilter.fieldsIn(element.getEnclosedElements());
-        //List<Element> fields = ElementFilter.fieldsIn(classElement.getEnclosedElements());
         TypeSpec.Builder clazzBuilder = TypeSpec.classBuilder(Const.LIBRARY_PREFIX + element.getSimpleName().toString())
-                .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .addField(TypeNameEx.STRING, "customFileName")
+                .addField(TypeNameEx.CONTEXT, "context")
+                .addField(TypeNameEx.SP_HELPER, "spHelper")
+                ;
         for (VariableElement field : fields) {
-            clazzBuilder.addMethod(getter(field));
-            clazzBuilder.addMethod(setter(field));
+            if(Utils.isSupportedFieldType(field.asType())){
+                clazzBuilder.addMethod(getter(field));
+                clazzBuilder.addMethod(setter(field));
+            }else{
+                //// TODO: 2016/11/29 有不支持的类型给提示 warning
+            }
         }
         TypeSpec clazz = clazzBuilder.build();
         JavaMaker.brewJava(clazz, processingEnv);
@@ -64,8 +65,12 @@ public class EasySpJavaMaker {
     private MethodSpec getter(VariableElement field) {
         String fieldName = field.getSimpleName().toString();
         TypeMirror typeMirror = field.asType();
+        Type type = Utils.getType(typeMirror);
+        String parameter = "value";
         MethodSpec method = MethodSpec.methodBuilder(Utils.getGetterMethodName(fieldName))
                 .addModifiers(Modifier.PUBLIC)
+                .addParameter(type, parameter)
+                .addStatement(Utils.getSpSetterStatement(typeMirror, fieldName, parameter))
                 .returns(void.class)
                 .build();
         return method;
