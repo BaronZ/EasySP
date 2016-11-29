@@ -79,14 +79,31 @@ public class Utils {
             return "";
         }
     }
-
+    private static String getDefaultValue(TypeMirror fieldType){
+        //TODO hard code here, will support later
+        TypeKind typeKind = fieldType.getKind();
+        String typeClassName = fieldType.toString();
+        if(typeKind == TypeKind.BOOLEAN || Boolean.class.getName().equals(typeClassName)){
+            return "false";
+        }else if(typeKind == TypeKind.INT || Integer.class.getName().equals(typeClassName)){
+            return "0";
+        }else if(typeKind == TypeKind.LONG || Long.class.getName().equals(typeClassName)){
+            return "0";
+        }else if(typeKind == TypeKind.FLOAT || Float.class.getName().equals(typeClassName)){
+            return "0";
+        }else if(String.class.getName().equals(typeClassName)){
+            return "\"\"";
+        }else {
+            return "";
+        }
+    }
     public static String getSpSetterStatement(TypeMirror typeMirror, String fieldName, String parameter) {
         String format = "spHelper.set%s(\"%s\", %s)";
         return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, parameter);
     }
     public static String getSpGetterStatement(TypeMirror typeMirror, String fieldName, String parameter) {
         String format = "return spHelper.get%s(\"%s\", %s)";
-        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, parameter);
+        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, getDefaultValue(typeMirror));
     }
 
     public static String upperCaseFirst(String value) {

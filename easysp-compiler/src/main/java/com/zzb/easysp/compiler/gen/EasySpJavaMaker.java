@@ -81,10 +81,9 @@ public class EasySpJavaMaker {
         String fieldName = field.getSimpleName().toString();
         TypeMirror typeMirror = field.asType();
         Type type = Utils.getType(typeMirror);
-        String parameter = "value";
+        String parameter = "defaultValue";
         MethodSpec method = MethodSpec.methodBuilder(Utils.getGetterMethodName(fieldName))
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(type, parameter)
                 .addStatement(Utils.getSpGetterStatement(typeMirror, fieldName, parameter))
                 .returns(type)
                 .build();
@@ -94,8 +93,12 @@ public class EasySpJavaMaker {
     private MethodSpec setter(VariableElement field) {
         String fieldName = field.getSimpleName().toString();
         TypeMirror typeMirror = field.asType();
+        Type type = Utils.getType(typeMirror);
+        String parameter = "value";
         MethodSpec method = MethodSpec.methodBuilder(Utils.getSetterMethodName(fieldName))
                 .addModifiers(Modifier.PUBLIC)
+                .addParameter(type, parameter)
+                .addStatement(Utils.getSpSetterStatement(typeMirror, fieldName, parameter))
                 .returns(void.class)
                 .build();
         return method;
