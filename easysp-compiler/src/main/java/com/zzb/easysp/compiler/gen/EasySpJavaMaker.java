@@ -1,5 +1,6 @@
 package com.zzb.easysp.compiler.gen;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 import com.zzb.easysp.EasySp;
@@ -44,12 +45,16 @@ public class EasySpJavaMaker {
 
     private void parseEasySpAndGen(Element element) {
         List<VariableElement> fields = ElementFilter.fieldsIn(element.getEnclosedElements());
-        TypeSpec.Builder clazzBuilder = TypeSpec.classBuilder(Const.LIBRARY_PREFIX + element.getSimpleName().toString())
+        String className = Const.LIBRARY_PREFIX + element.getSimpleName().toString();
+        TypeSpec.Builder clazzBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addField(TypeNameEx.STRING, "customFileName")
                 .addField(TypeNameEx.CONTEXT, "context")
                 .addField(TypeNameEx.SP_HELPER, "spHelper")
-                ;
+                .addMethod(privateConstructor())
+                .addMethod(createWithCustomName(className))
+                .addMethod(create(className));
+
         for (VariableElement field : fields) {
             if(Utils.isSupportedFieldType(field.asType())){
                 clazzBuilder.addMethod(getter(field));
@@ -62,21 +67,39 @@ public class EasySpJavaMaker {
         TypeSpec clazz = clazzBuilder.build();
         JavaMaker.brewJava(clazz, processingEnv);
     }
-
-    private MethodSpec notSupport(VariableElement field) {
-        String fieldName = field.getSimpleName().toString();
-        TypeMirror typeMirror = field.asType();
-        Type type = Utils.getType(typeMirror);
-        String parameter = "value";
-        MethodSpec method = MethodSpec.methodBuilder("notSupport" + fieldName)
-                .addModifiers(Modifier.PUBLIC)
-                .addParameter(type, parameter)
-                .addStatement(Utils.getSpSetterStatement(typeMirror, fieldName, parameter))
-                .returns(void.class)
+    private MethodSpec privateConstructor(){
+        MethodSpec method = MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PRIVATE)
                 .build();
         return method;
     }
-
+    private MethodSpec create(String className){
+        ClassName returnType = ClassName.get(Const.PACKAGE_NAME, className);
+        MethodSpec method = MethodSpec.methodBuilder("create")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .addParameter(TypeNameEx.CONTEXT, "context")
+                .addStatement("return create(context, \"\")")
+                .returns(returnType)
+                .build();
+        return method;
+    }
+    private MethodSpec createWithCustomName(String className){
+        ClassName returnType = ClassName.get(Const.PACKAGE_NAME, className);
+        MethodSpec method = MethodSpec.methodBuilder("create")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .addParameter(TypeNameEx.CONTEXT, "context")
+                .addParameter(TypeNameEx.STRING, "customFileName")
+                .addStatement("$T pref = new $T()", returnType, returnType)
+                .addStatement("pref.context = context")
+                .beginControlFlow("if (customFileName == null || customFileName.length() == 0) ")
+                .addStatement("customFileName = pref.getClass().getCanonicalName()")
+                .endControlFlow()
+                .addStatement("pref.spHelper = SPHelper.newInstance(context, customFileName)")
+                .addStatement("return pref")
+                .returns(returnType)
+                .build();
+        return method;
+    }
     private MethodSpec getter(VariableElement field) {
         String fieldName = field.getSimpleName().toString();
         TypeMirror typeMirror = field.asType();
@@ -96,6 +119,19 @@ public class EasySpJavaMaker {
         Type type = Utils.getType(typeMirror);
         String parameter = "value";
         MethodSpec method = MethodSpec.methodBuilder(Utils.getSetterMethodName(fieldName))
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(type, parameter)
+                .addStatement(Utils.getSpSetterStatement(typeMirror, fieldName, parameter))
+                .returns(void.class)
+                .build();
+        return method;
+    }
+    private MethodSpec notSupport(VariableElement field) {
+        String fieldName = field.getSimpleName().toString();
+        TypeMirror typeMirror = field.asType();
+        Type type = Utils.getType(typeMirror);
+        String parameter = "value";
+        MethodSpec method = MethodSpec.methodBuilder("notSupport" + fieldName)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(type, parameter)
                 .addStatement(Utils.getSpSetterStatement(typeMirror, fieldName, parameter))
