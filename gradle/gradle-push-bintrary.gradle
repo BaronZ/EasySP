@@ -58,15 +58,13 @@ publishing {
         }
     }
 }
-Properties localProperties = new Properties()
-boolean hasLocalPro = false
-if (project.rootProject.findProject('local.properties') != null){
-    hasLocalPro = true
-    localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-}
+
+//Properties properties = new Properties()
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 bintray {
-    user = hasLocalPro ? localProperties.getProperty("bintray.user") : System.getenv("bintray.user")
-    key = hasLocalPro ? localProperties.getProperty("bintray.apikey") : System.getenv("bintray.apikey")
+//    user = property('user')
+//    key = property('key')
     publications = ['mavenJava']
     pkg {
         repo = 'maven'
