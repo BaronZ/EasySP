@@ -34,8 +34,8 @@ class ExampleActivity extends Activity {
     SharedPreferences sp = getSharedPreferences("UserPref", Activity.MODE_PRIVATE);
     Editor editor = sp.edit();
     editor.putString("UserName", "thisIsUserName").apply()
-    sp.getString(key, defValue);
-  }
+    sp.getString("UserName", "");//default value is not supported at the moment
+  }
 }
 ```
 Download
