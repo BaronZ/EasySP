@@ -9,3 +9,5 @@ dependencies {
 
 sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
 targetCompatibility = rootProject.ext.targetCompatibilityVersion
+
+apply from: rootProject.file('gradle/gradle-push-bintrary.gradle')

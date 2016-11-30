@@ -1,0 +1,65 @@
+def globalVersion = VERSION_NAME
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    apply plugin: 'idea'
+    apply plugin: 'com.jfrog.bintray'
+    configure(subprojects.findAll { new File(it.projectDir, 'src').directory }) {
+        apply plugin: 'java'
+    }
+    group = GROUP
+    version = globalVersion
+
+    ext.publish = true
+    bintray {
+        user = property('user')
+        key = property('key')
+        configurations = ['published', 'archives']
+        publish = project.publish
+        pkg {
+            repo = 'maven'
+            name = POM_ARTIFACT_ID
+            desc = POM_DESCRIPTION
+            websiteUrl = POM_URL
+            issueTrackerUrl = POM_URL
+            vcsUrl = POM_VCS_URL
+            licenses = ['Apache-2.0']
+            publicDownloadNumbers = true
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'maven'
+
+    if (project.plugins.hasPlugin('java')) {
+        // manifest.mainAttributes(provider: 'gradle')
+        configurations {
+            published
+        }
+        dependencies {
+            testCompile 'junit:junit:4.7'
+        }
+
+        task sourceJar(type: Jar) {
+            from sourceSets.main.allSource
+            classifier = 'sources'
+        }
+        task javadocJar(type: Jar, dependsOn: javadoc) {
+            classifier = 'javadoc'
+            from javadoc.destinationDir
+        }
+
+        // Add the sourceJars to non-extractor modules
+        artifacts {
+            published sourceJar
+            published javadocJar
+        }
+    }
+}
+
+configurations {
+    published
+}
