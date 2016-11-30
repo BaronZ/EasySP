@@ -5,6 +5,7 @@ package com.zzb.easysp;
  */
 @EasySP
 public class Test {
+    @DefaultValue(defStr = "")
     String imString2;
     String imString;
     Object thisIsObject;

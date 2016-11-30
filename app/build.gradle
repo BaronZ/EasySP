@@ -27,6 +27,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
 
-    provided "com.zzb.easysp:easysp-annotations:${easySpVersion}"
-    annotationProcessor "com.zzb.easysp:easysp-compiler:${easySpVersion}"
+    provided project(':easysp-annotations')
+    annotationProcessor project(':easysp-compiler')
+//    provided "com.zzb.easysp:easysp-annotations:${easySpVersion}"
+//    annotationProcessor "com.zzb.easysp:easysp-compiler:${easySpVersion}"
 }
