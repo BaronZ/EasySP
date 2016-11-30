@@ -3,7 +3,7 @@ package com.zzb.easysp.compiler.gen;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-import com.zzb.easysp.EasySp;
+import com.zzb.easysp.EasySP;
 import com.zzb.easysp.compiler.common.Const;
 import com.zzb.easysp.compiler.common.TypeNameEx;
 import com.zzb.easysp.compiler.common.Utils;
@@ -38,7 +38,7 @@ public class EasySpJavaMaker {
     }
 
     private void genEasySp() {
-        for (Element classElement : roundEnv.getElementsAnnotatedWith(EasySp.class)) {
+        for (Element classElement : roundEnv.getElementsAnnotatedWith(EasySP.class)) {
             parseEasySpAndGen(classElement);
         }
     }
