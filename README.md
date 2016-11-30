@@ -37,7 +37,7 @@ class ExampleActivity extends Activity {
   }
 }
 ```
-Download[ ![LatestVersion](https://api.bintray.com/packages/baronz/maven/easysp-compiler/images/download.svg) ](https://bintray.com/baronz/maven/easysp-compiler/_latestVersion)  
+Download (latest version) -> [ ![LatestVersion](https://api.bintray.com/packages/baronz/maven/easysp-compiler/images/download.svg) ](https://bintray.com/baronz/maven/easysp-compiler/_latestVersion)  
 --------
 
 ```groovy
