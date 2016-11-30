@@ -45,8 +45,10 @@ public class EasySpJavaMaker {
 
     private void parseEasySpAndGen(Element element) {
         List<VariableElement> fields = ElementFilter.fieldsIn(element.getEnclosedElements());
-        String className = Const.LIBRARY_PREFIX + element.getSimpleName().toString();
+        String superClazz = element.getSimpleName().toString();
+        String className = Const.LIBRARY_PREFIX + superClazz;
         TypeSpec.Builder clazzBuilder = TypeSpec.classBuilder(className)
+                .superclass(ClassName.get(Utils.getPackageName(element), Utils.getClassName(element)))
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addField(TypeNameEx.STRING, "customFileName")
                 .addField(TypeNameEx.CONTEXT, "context")

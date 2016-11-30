@@ -12,8 +12,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView tv = (TextView) findViewById(R.id.tv);
-        EasySpTest test = EasySpTest.create(this);
-        //test.setImString("im string");
+        Test test = EasySpTest.create(this);
+        //test.setImString("im string111");
         tv.setText(test.getImString());
 
     }
