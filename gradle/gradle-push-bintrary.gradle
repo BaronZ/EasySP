@@ -58,10 +58,12 @@ publishing {
         }
     }
 }
+Properties localProperties = new Properties()
+localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 bintray {
-    user = property('user')
-    key = property('key')
+    user = localProperties.getProperty("bintray.user")
+    key = localProperties.getProperty("bintray.apikey")
     publications = ['mavenJava']
     pkg {
         repo = 'maven'
