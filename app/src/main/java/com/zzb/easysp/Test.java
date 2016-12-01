@@ -5,7 +5,7 @@ package com.zzb.easysp;
  */
 @EasySP
 public class Test {
-    @DefaultValue("")
+    @DefaultValue("this is default str")
     String imString2;
     String imString;
     Object thisIsObject;

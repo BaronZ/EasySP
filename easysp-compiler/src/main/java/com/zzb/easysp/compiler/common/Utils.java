@@ -88,8 +88,12 @@ public class Utils {
         TypeKind typeKind = fieldType.getKind();
         String typeClassName = fieldType.toString();
         boolean hasDefaultValue = defaultValue != null;
-        if(hasDefaultValue && defaultValue.value().length() > 0 ){
-            return defaultValue.value();
+        if (hasDefaultValue && defaultValue.value().length() > 0) {
+            if (String.class.getName().equals(typeClassName)) {
+                return "\"" + defaultValue.value() + "\"";
+            } else {
+                return defaultValue.value();
+            }
         }
         if (typeKind == TypeKind.BOOLEAN || Boolean.class.getName().equals(typeClassName)) {
             return "false";
@@ -113,7 +117,8 @@ public class Utils {
 
     public static String getSpGetterStatement(TypeMirror typeMirror, String fieldName, DefaultValue defaultValue) {
         String format = "return spHelper.get%s(\"%s\", %s)";
-        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, getDefaultValue(typeMirror, defaultValue));
+        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName,
+                getDefaultValue(typeMirror, defaultValue));
     }
 
     public static String upperCaseFirst(String value) {
