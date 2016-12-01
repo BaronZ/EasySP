@@ -15,7 +15,11 @@ Example
 class UserPref {
   String userName;
   int age;
-
+  @DefaultValue("123F")
+  float thisIsFloat;
+  @DefaultValue("123L")
+  long thisIsLong;
+  
   //getters and setters
 }  
 
@@ -33,7 +37,7 @@ class ExampleActivity extends Activity {
     SharedPreferences sp = getSharedPreferences("UserPref", Activity.MODE_PRIVATE);
     Editor editor = sp.edit();
     editor.putString("UserName", "thisIsUserName").apply()
-    sp.getString("UserName", "");//default value is not supported at the moment
+    sp.getString("UserName", "");
   }
 }
 ```
