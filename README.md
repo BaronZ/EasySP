@@ -13,7 +13,8 @@ Example
 
 @EasySP
 class UserPref {
-  String userName;
+  @DefaultValue("this is default string")
+  String userName;
   int age;
   @DefaultValue("123F")
   float thisIsFloat;
@@ -37,7 +38,7 @@ class ExampleActivity extends Activity {
     SharedPreferences sp = getSharedPreferences("UserPref", Activity.MODE_PRIVATE);
     Editor editor = sp.edit();
     editor.putString("UserName", "thisIsUserName").apply()
-    sp.getString("UserName", "");
+    sp.getString("UserName", "this is default string");
   }
 }
 ```
