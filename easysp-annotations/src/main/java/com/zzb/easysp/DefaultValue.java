@@ -11,9 +11,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.SOURCE)
 public @interface DefaultValue {
-    String defStr() default "";
-    int defInt() default 0;
-    long defLong() default 0;
-    float defFloat() default 0f;
-    boolean defBool() default false;
+    String value() default "";
 }

@@ -3,6 +3,7 @@ package com.zzb.easysp.compiler.gen;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
+import com.zzb.easysp.DefaultValue;
 import com.zzb.easysp.EasySP;
 import com.zzb.easysp.compiler.common.Const;
 import com.zzb.easysp.compiler.common.TypeNameEx;
@@ -59,7 +60,8 @@ public class EasySpJavaMaker {
 
         for (VariableElement field : fields) {
             if(Utils.isSupportedFieldType(field.asType())){
-                clazzBuilder.addMethod(getter(field));
+                DefaultValue defaultValue = field.getAnnotation(DefaultValue.class);
+                clazzBuilder.addMethod(getter(field, defaultValue));
                 clazzBuilder.addMethod(setter(field));
             }else{
                 //clazzBuilder.addMethod(notSupport(field));
@@ -102,14 +104,13 @@ public class EasySpJavaMaker {
                 .build();
         return method;
     }
-    private MethodSpec getter(VariableElement field) {
+    private MethodSpec getter(VariableElement field, DefaultValue defaultValue) {
         String fieldName = field.getSimpleName().toString();
         TypeMirror typeMirror = field.asType();
         Type type = Utils.getType(typeMirror);
-        String parameter = "defaultValue";
         MethodSpec method = MethodSpec.methodBuilder(Utils.getGetterMethodName(fieldName))
                 .addModifiers(Modifier.PUBLIC)
-                .addStatement(Utils.getSpGetterStatement(typeMirror, fieldName, parameter))
+                .addStatement(Utils.getSpGetterStatement(typeMirror, fieldName, defaultValue))
                 .returns(type)
                 .build();
         return method;

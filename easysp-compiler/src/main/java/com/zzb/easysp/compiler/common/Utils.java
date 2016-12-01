@@ -1,5 +1,6 @@
 package com.zzb.easysp.compiler.common;
 
+import com.zzb.easysp.DefaultValue;
 import java.lang.reflect.Type;
 import java.util.Locale;
 import javax.lang.model.element.Element;
@@ -83,10 +84,13 @@ public class Utils {
         }
     }
 
-    private static String getDefaultValue(TypeMirror fieldType) {
-        //TODO hard code here, will support later
+    private static String getDefaultValue(TypeMirror fieldType, DefaultValue defaultValue) {
         TypeKind typeKind = fieldType.getKind();
         String typeClassName = fieldType.toString();
+        boolean hasDefaultValue = defaultValue != null;
+        if(hasDefaultValue && defaultValue.value().length() > 0 ){
+            return defaultValue.value();
+        }
         if (typeKind == TypeKind.BOOLEAN || Boolean.class.getName().equals(typeClassName)) {
             return "false";
         } else if (typeKind == TypeKind.INT || Integer.class.getName().equals(typeClassName)) {
@@ -107,9 +111,9 @@ public class Utils {
         return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, parameter);
     }
 
-    public static String getSpGetterStatement(TypeMirror typeMirror, String fieldName, String parameter) {
+    public static String getSpGetterStatement(TypeMirror typeMirror, String fieldName, DefaultValue defaultValue) {
         String format = "return spHelper.get%s(\"%s\", %s)";
-        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, getDefaultValue(typeMirror));
+        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, getDefaultValue(typeMirror, defaultValue));
     }
 
     public static String upperCaseFirst(String value) {

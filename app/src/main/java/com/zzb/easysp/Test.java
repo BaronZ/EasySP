@@ -5,11 +5,14 @@ package com.zzb.easysp;
  */
 @EasySP
 public class Test {
-    @DefaultValue(defStr = "")
+    @DefaultValue("")
     String imString2;
     String imString;
     Object thisIsObject;
+    @DefaultValue("123")
     int thisIsInt;
+    @DefaultValue("123F")
+    float thisFloat = 1;
     MainActivity thisIsActivity;
     Long thisIsBoxedLong;
     long thisIsPrimitiveLong;
