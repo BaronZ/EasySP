@@ -52,7 +52,7 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('description', 'A gradle plugin for publishing to Bintray')
+                root.appendNode('description', POM_DESCRIPTION)
                 root.children().last() + pomConfig
             }
         }
