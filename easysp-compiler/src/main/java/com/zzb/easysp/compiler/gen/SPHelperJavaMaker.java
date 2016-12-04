@@ -32,6 +32,8 @@ public class SPHelperJavaMaker {
                 .addMethod(getBoolean())
                 .addMethod(setLong())
                 .addMethod(getLong())
+                .addMethod(setStringSet())
+                .addMethod(getStringSet())
                 .build();
 
         JavaMaker.brewJava(clazz, processingEnv);
@@ -71,7 +73,28 @@ public class SPHelperJavaMaker {
     private MethodSpec getLong() {
         return spGetter(long.class, "Long");
     }
-
+    private MethodSpec setStringSet(){
+        String typeName = "StringSet";
+        MethodSpec method = MethodSpec.methodBuilder("set" + typeName)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(void.class)
+                .addParameter(String.class, "key")
+                .addParameter(TypeNameEx.SET_OF_STRING, "value")
+                .addStatement("mEditor.put" + typeName + "(key, value).apply()")
+                .build();
+        return method;
+    }
+    private MethodSpec getStringSet(){
+        String typeName = "StringSet";
+        MethodSpec method = MethodSpec.methodBuilder("get" + typeName)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(TypeNameEx.SET_OF_STRING)
+                .addParameter(String.class, "key")
+                .addParameter(TypeNameEx.SET_OF_STRING, "defValue")
+                .addStatement("return mSharedPreferences.get" + typeName + "(key, defValue)")
+                .build();
+        return method;
+    }
 
 
     private MethodSpec spSetter(Type type, String typeName) {
