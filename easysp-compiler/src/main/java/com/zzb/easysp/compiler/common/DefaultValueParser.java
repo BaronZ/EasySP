@@ -31,6 +31,8 @@ public class DefaultValueParser {
             return "0";
         } else if (String.class.getName().equals(typeClassName)) {
             return "\"\"";
+        } else if (Utils.isStringSet(fieldType)) {
+            return "null";
         } else {
             return "";
         }

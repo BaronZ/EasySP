@@ -1,5 +1,7 @@
 package com.zzb.easysp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         Test test = EasySPTest.create(this);
         //test.setImString("im string111");
         tv.setText(test.getImString());
-
+        SharedPreferences sp = getSharedPreferences("", Context.MODE_PRIVATE);
+        sp.getStringSet("", null);
     }
 }

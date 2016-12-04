@@ -29,7 +29,7 @@ public class Utils {
             return true;
         } else if (String.class.getName().equals(typeClassName)) {
             return true;
-        } else if (Set.class.getName().equals(typeClassName)) {
+        } else if (isStringSet(fieldType)) {//(Set.class.getName().equals(typeClassName)) {
             return true;
         } else {
             return false;
@@ -58,7 +58,7 @@ public class Utils {
             return typeKind == TypeKind.FLOAT ? float.class : Float.class;
         } else if (String.class.getName().equals(typeClassName)) {
             return String.class;
-        } else if (Set.class.getName().equals(typeClassName)) {
+        } else if (isStringSet(fieldType)) {
             return Set.class;
         } else {
             return Object.class;
@@ -79,29 +79,14 @@ public class Utils {
         } else if (String.class.getName().equals(typeClassName)) {
             return "String";
         } else if (isStringSet(fieldType)) {
-            final StringBuilder setType = new StringBuilder();
-            setType.append("Set");
-            fieldType.accept(new SimpleTypeVisitor6<Void, Void>() {
-                @Override
-                public Void visitDeclared(DeclaredType declaredType, Void aVoid) {
-                    List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
-                    if (!typeArguments.isEmpty()) {
-                        setType.append("<");
-                        setType.append(typeArguments.get(0));
-                        setType.append(">");
-                    }
-                    return null;
-                }
-            }, null);
-            return setType.toString();
+            return "StringSet";
         } else {
             return "";
         }
     }
-
-    private static boolean isStringSet(TypeMirror typeMirror) {
+    public static boolean isStringSet(TypeMirror typeMirror) {
         String typeClassName = typeMirror.toString();
-        if (Set.class.getName().equals(typeClassName)) {
+        if ("java.util.Set<java.lang.String>".equals(typeClassName)) {
             final StringBuilder genericTypeStr = new StringBuilder();
             typeMirror.accept(new SimpleTypeVisitor6<Void, Void>() {
                 @Override
@@ -114,7 +99,7 @@ public class Utils {
                     return null;
                 }
             }, null);
-            return "String".equals(genericTypeStr.toString());
+            return String.class.getName().equals(genericTypeStr.toString());
         } else {
             return false;
         }

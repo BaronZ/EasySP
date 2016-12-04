@@ -1,5 +1,7 @@
 package com.zzb.easysp;
 
+import java.util.Set;
+
 /**
  * Created by ZZB on 2016/11/29.
  */
@@ -18,6 +20,7 @@ public class Test {
     long thisIsPrimitiveLong;
     float thisIsPrimitiveFloat;
     Float thisIsBoxedFloat;
+    Set<String> stringSetField;
 
     private void test(){}
 
