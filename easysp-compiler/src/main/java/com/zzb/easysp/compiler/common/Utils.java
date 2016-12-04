@@ -1,25 +1,20 @@
 package com.zzb.easysp.compiler.common;
 
-import com.zzb.easysp.DefaultValue;
 import java.lang.reflect.Type;
-import java.util.Locale;
+import java.util.List;
+import java.util.Set;
+
 import javax.lang.model.element.Element;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.SimpleTypeVisitor6;
 
 /**
  * Created by ZZB on 2016/11/29.
  */
 
 public class Utils {
-
-    public static String getSetterMethodName(String fieldName) {
-        return "set" + upperCaseFirst(fieldName);
-    }
-
-    public static String getGetterMethodName(String fieldName) {
-        return "get" + upperCaseFirst(fieldName);
-    }
 
     public static boolean isSupportedFieldType(TypeMirror fieldType) {
         TypeKind typeKind = fieldType.getKind();
@@ -33,6 +28,8 @@ public class Utils {
         } else if (typeKind == TypeKind.FLOAT || Float.class.getName().equals(typeClassName)) {
             return true;
         } else if (String.class.getName().equals(typeClassName)) {
+            return true;
+        } else if (Set.class.getName().equals(typeClassName)) {
             return true;
         } else {
             return false;
@@ -61,12 +58,14 @@ public class Utils {
             return typeKind == TypeKind.FLOAT ? float.class : Float.class;
         } else if (String.class.getName().equals(typeClassName)) {
             return String.class;
+        } else if (Set.class.getName().equals(typeClassName)) {
+            return Set.class;
         } else {
             return Object.class;
         }
     }
 
-    public static String getTypeName(TypeMirror fieldType) {
+    public static String typeToString(TypeMirror fieldType) {
         TypeKind typeKind = fieldType.getKind();
         String typeClassName = fieldType.toString();
         if (typeKind == TypeKind.BOOLEAN || Boolean.class.getName().equals(typeClassName)) {
@@ -79,51 +78,46 @@ public class Utils {
             return "Float";
         } else if (String.class.getName().equals(typeClassName)) {
             return "String";
+        } else if (isStringSet(fieldType)) {
+            final StringBuilder setType = new StringBuilder();
+            setType.append("Set");
+            fieldType.accept(new SimpleTypeVisitor6<Void, Void>() {
+                @Override
+                public Void visitDeclared(DeclaredType declaredType, Void aVoid) {
+                    List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
+                    if (!typeArguments.isEmpty()) {
+                        setType.append("<");
+                        setType.append(typeArguments.get(0));
+                        setType.append(">");
+                    }
+                    return null;
+                }
+            }, null);
+            return setType.toString();
         } else {
             return "";
         }
     }
 
-    private static String getDefaultValue(TypeMirror fieldType, DefaultValue defaultValue) {
-        TypeKind typeKind = fieldType.getKind();
-        String typeClassName = fieldType.toString();
-        boolean hasDefaultValue = defaultValue != null;
-        if (hasDefaultValue && defaultValue.value().length() > 0) {
-            if (String.class.getName().equals(typeClassName)) {
-                return "\"" + defaultValue.value() + "\"";
-            } else {
-                return defaultValue.value();
-            }
-        }
-        if (typeKind == TypeKind.BOOLEAN || Boolean.class.getName().equals(typeClassName)) {
-            return "false";
-        } else if (typeKind == TypeKind.INT || Integer.class.getName().equals(typeClassName)) {
-            return "0";
-        } else if (typeKind == TypeKind.LONG || Long.class.getName().equals(typeClassName)) {
-            return "0";
-        } else if (typeKind == TypeKind.FLOAT || Float.class.getName().equals(typeClassName)) {
-            return "0";
-        } else if (String.class.getName().equals(typeClassName)) {
-            return "\"\"";
+    private static boolean isStringSet(TypeMirror typeMirror) {
+        String typeClassName = typeMirror.toString();
+        if (Set.class.getName().equals(typeClassName)) {
+            final StringBuilder genericTypeStr = new StringBuilder();
+            typeMirror.accept(new SimpleTypeVisitor6<Void, Void>() {
+                @Override
+                public Void visitDeclared(DeclaredType declaredType, Void aVoid) {
+                    List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
+                    if (!typeArguments.isEmpty()) {
+                        TypeMirror genericType = typeArguments.get(0);
+                        genericTypeStr.append(genericType.toString());
+                    }
+                    return null;
+                }
+            }, null);
+            return "String".equals(genericTypeStr.toString());
         } else {
-            return "";
+            return false;
         }
     }
 
-    public static String getSpSetterStatement(TypeMirror typeMirror, String fieldName, String parameter) {
-        String format = "spHelper.set%s(\"%s\", %s)";
-        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName, parameter);
-    }
-
-    public static String getSpGetterStatement(TypeMirror typeMirror, String fieldName, DefaultValue defaultValue) {
-        String format = "return spHelper.get%s(\"%s\", %s)";
-        return String.format(Locale.US, format, getTypeName(typeMirror), fieldName,
-                getDefaultValue(typeMirror, defaultValue));
-    }
-
-    public static String upperCaseFirst(String value) {
-        char[] array = value.toCharArray();
-        array[0] = Character.toUpperCase(array[0]);
-        return new String(array);
-    }
 }
