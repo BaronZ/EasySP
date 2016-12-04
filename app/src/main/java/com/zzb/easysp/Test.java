@@ -20,6 +20,7 @@ public class Test {
     long thisIsPrimitiveLong;
     float thisIsPrimitiveFloat;
     Float thisIsBoxedFloat;
+//    @DefaultValue("['a', 'c', 'd']") //default value of Set<String> is not supported at the moment
     Set<String> stringSetField;
 
     private void test(){}
