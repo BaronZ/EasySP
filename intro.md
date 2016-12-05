@@ -96,13 +96,15 @@ dependencies{
 # 关于EasySP
 - 每个pojo类上加注解`@EasySP`, EasySP库就会在编译时自动生成一个`EasySP前缀+原来的类名`的类，假设pojo类叫`GlobalSp`，则自动生成sp操作类`EasySPGlobalSp`对应一个SharedPreferences文件
 - 支持任何SharedPreferences支持的存储类型，比如`String`, `int`, `Set<String>`等
-- 假如我们想用SharedPreferences存储一个字符类型的内容，只需要对pojo类添加一个字段即可，之后的get、set操作可以通过下面代码获得
+- 假如我们想用SharedPreferences存储一个字符类型的内容，只需要对pojo类添加一个字段即可，之后的get、set操作可以通过下面代码获得  
+
 ```java
 EasySPXXX xxxSp = EasySPXXX.create(context);
 xxxSp.setYYY("this is the value for YYY");//相当于sp.putString("UserName", "this is user name")
 xxxSp.getYYY();//相当于sp.getString("UserName", "")
 ```
-- 默认一个pojo类对应一个SharedPreferences文件，可以通过`EaxySPXXX.create(context, "customFilename")`去创建特定名称的SharedPreferences文件，比如这个方法适用于多用户登录，保存不同的用户信息
+- 默认一个pojo类对应一个SharedPreferences文件，可以通过`EaxySPXXX.create(context, "customFilename")`去创建特定名称的SharedPreferences文件，比如这个方法适用于多用户登录，保存不同的用户信息  
+
 ```java
 //假如我们有一个pojo类XXX
 class XXX{
@@ -134,9 +136,9 @@ class EasySPXXX extends XXX{
 上面的内容多次提到Annotation Processor(后面简称AP)这个库的关键就是AP。  
 Android开发中写得最多的重复代码应该就是findViewById了。而Jake Wharton就写了一个很实用的库，使我们免去重复写findViewById, 这个库就是用AP自动生成findViewById等这些代码的。  
 下面我来讲讲什么是AP，以及怎么用AP去自动生成这些代码
-1. #### 什么是Annotation Processor 
+#### 1. 什么是Annotation Processor 
 AP会在编译时扫描源文件中的注解，并处理注解。我们可以自定义注解，然后在编译时处理这些注解，根据注解去生成java文件，自动生成的代码与我们手写的代码一样。这可以使我们不需要再去手动写那些重复的模板代码。AP的代码我们只需要写一次，后续就可以用注解去生成需要的模板代码
-2. #### Annotation Processor怎么工作
+#### 2. Annotation Processor怎么工作
 如果我们要写自己的注解处理器
 ###### 2.1继承`AbstractProcessor`
 ```java
@@ -161,7 +163,7 @@ public @interface EasySP {
 ```
 - `@Target(ElementType.TYPE)`声明这个注解在哪里可以使用，`ElementType.TYPE`表示这个注解可以声明在Class, interface或者enum
 - `@Retention(RetentionPolicy.SOURCE)`表示这个注解只存在于源码中，编译生成的class文件没有这个注解
-3. #### 如何解析注解
+#### 3. 如何解析注解
 ###### 3.1获得注解的类
 ```java
 @Override
@@ -182,7 +184,7 @@ private void parseElement(Element element){
     //根据这些内容去生成java文件
 }
 ```
-4. #### 生成java文件
+#### 4. 生成java文件
 生成java文件我们可以手动去拼写字符串并生成java文件，但是太过于繁琐且容易出错，所以这里我们引入square公司的[javapoet](https://github.com/square/javapoet)。javapoet通过builder模式，可以很方便地生成java文件。  
 下面展示了如何根据字段去组合一个方法
 ```java
