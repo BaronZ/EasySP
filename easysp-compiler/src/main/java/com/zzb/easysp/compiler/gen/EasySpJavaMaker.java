@@ -104,7 +104,7 @@ public class EasySpJavaMaker {
                 .addStatement("$T pref = new $T()", returnType, returnType)
                 .addStatement("pref.context = context")
                 .beginControlFlow("if (customFileName == null || customFileName.length() == 0) ")
-                .addStatement("customFileName = pref.getClass().getCanonicalName()")
+                .addStatement("customFileName = pref.getClass().getSuperclass().getCanonicalName()")
                 .endControlFlow()
                 .addStatement("pref.spHelper = SPHelper.newInstance(context, customFileName)")
                 .addStatement("return pref")
