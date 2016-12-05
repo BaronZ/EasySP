@@ -150,9 +150,11 @@ class CustomProcessor extends AbstractProcessor {
 }
 ```
 - `public boolean process(Set<? extends TypeElement> annoations, RoundEnvironment env)`这个方法获得所有这个处理器支持的注解(支持的注解类型可以通过`getSupportedAnnotationTypes()`获得)，我们可以根据这些注解获得相应的类、成员变量或者方法等，可以解析这些注解并生成相应的java文件
-- `public Set<String> getSupportedAnnotationTypes()`这个方法我们需要返回所有这个注解处理器想要处理的注解类型
+- `public Set<String> getSupportedAnnotationTypes()`这个方法我们需要返回所有这个注解处理器想要处理的注解类型  
+
 ###### 2.2注册Processor
-在项目要目录下，创建META-INF/services目录，目录里新建一个文件，并命名为javax.annotation.processing.Processor，文件里面的内容填写我们自定义类的完整类名，eg: com.example.CustomProcessor。注意，由于这个库的代码不打包进我们的apk，我们可以引入一个第三方库来自动帮我们注册processor，这个库就是google的auto-service(注，这个库里包含了guava，假如我们需要打包进apk，是不可接受的)，我们只需要在CustomProcessor这个类上面添加一个注解@AutoService，就可以自动帮我们注册Processor了
+在项目要目录下，创建META-INF/services目录，目录里新建一个文件，并命名为javax.annotation.processing.Processor，文件里面的内容填写我们自定义类的完整类名，eg: com.example.CustomProcessor。注意，由于这个库的代码不打包进我们的apk，我们可以引入一个第三方库来自动帮我们注册processor，这个库就是google的auto-service(注，这个库里包含了guava，假如我们需要打包进apk，是不可接受的)，我们只需要在CustomProcessor这个类上面添加一个注解@AutoService，就可以自动帮我们注册Processor了  
+
 ###### 2.3自定义注解
 以本库的注解为例
 ```java
@@ -162,8 +164,10 @@ public @interface EasySP {
 }
 ```
 - `@Target(ElementType.TYPE)`声明这个注解在哪里可以使用，`ElementType.TYPE`表示这个注解可以声明在Class, interface或者enum
-- `@Retention(RetentionPolicy.SOURCE)`表示这个注解只存在于源码中，编译生成的class文件没有这个注解
-#### 3. 如何解析注解
+- `@Retention(RetentionPolicy.SOURCE)`表示这个注解只存在于源码中，编译生成的class文件没有这个注解  
+
+#### 3. 如何解析注解  
+
 ###### 3.1获得注解的类
 ```java
 @Override
