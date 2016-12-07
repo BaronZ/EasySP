@@ -5,6 +5,7 @@ AnnotationProdessor 编译时期自动生成 SharedPreference操作的代码
  * Eliminate SharedPreferences operating code by using `@EasySP` on pojo class
  * All the code generate at compile time automaticaly
  * Support any type SharedPreferences supports, eg: `String`, `int`, `Set<String>` etc.
+ * This library does not package to your apk, so it will not increase your method count and apk size
  
  
 Example
