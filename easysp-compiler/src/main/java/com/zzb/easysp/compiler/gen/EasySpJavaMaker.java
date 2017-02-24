@@ -101,6 +101,7 @@ public class EasySpJavaMaker {
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .addParameter(TypeNameEx.CONTEXT, "context")
                 .addParameter(TypeNameEx.STRING, "customFileName")
+                .addStatement("context = context.getApplicationContext()")
                 .addStatement("$T pref = new $T()", returnType, returnType)
                 .addStatement("pref.context = context")
                 .beginControlFlow("if (customFileName == null || customFileName.length() == 0) ")
