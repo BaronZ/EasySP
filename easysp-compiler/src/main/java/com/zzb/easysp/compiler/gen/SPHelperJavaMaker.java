@@ -12,9 +12,12 @@ import javax.lang.model.element.Modifier;
  */
 
 public class SPHelperJavaMaker {
-
+    private static boolean isSPHelperJavaFileGenerated = false;
     public void brewJava(ProcessingEnvironment processingEnv) {
-
+        if (isSPHelperJavaFileGenerated) {
+            return;
+        }
+        isSPHelperJavaFileGenerated = true;
         TypeSpec clazz = TypeSpec.classBuilder("SPHelper")
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addField(TypeNameEx.CONTEXT, "mContext", Modifier.PRIVATE)
