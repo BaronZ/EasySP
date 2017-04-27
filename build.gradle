@@ -18,7 +18,7 @@ ext {
     minSdkVersion = 11
     targetSdkVersion = 24
     compileSdkVersion = 24
-    buildToolsVersion = '24.0.2'
+    buildToolsVersion = '25.0.2'
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
     easySpVersion = '0.2'
