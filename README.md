@@ -50,7 +50,7 @@ Download
 
 ```groovy
 dependencies {
-    provided "com.zzb.easysp:easysp-annotations:0.6"
-    annotationProcessor "com.zzb.easysp:easysp-compiler:0.6"
+    provided "com.zzb.easysp:easysp-annotations:0.7"
+    annotationProcessor "com.zzb.easysp:easysp-compiler:0.7"
 }
 ```
